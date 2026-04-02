@@ -46,10 +46,10 @@ public class FoodItemController {
     public ResponseEntity<String> delete(@PathVariable Long id){
         if(service.listById(id) != null){
             service.delete(id);
-            return ResponseEntity.ok("User with id: " + id + " deleted successfully!");
+            return ResponseEntity.ok("Ingredient with id: " + id + " deleted successfully!");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("User with id: " + id + " not found");
+                    .body("Ingredient with id: " + id + " not found");
         }
     }
 

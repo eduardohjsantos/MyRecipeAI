@@ -7,5 +7,6 @@ public enum Category {
     MEAT,
     BAKING,
     SAUCES,
+    BEVERAGES,
     DAIRY;
 }

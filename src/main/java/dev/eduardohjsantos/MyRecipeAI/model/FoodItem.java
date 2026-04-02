@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,10 +18,15 @@ public class FoodItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
+    @Enumerated(EnumType.STRING)
     private Category category;
+
     private Integer amount;
-    private LocalDateTime expiration;
+
+    private LocalDate expiration;
 
     public Long getId() {
         return id;
@@ -38,7 +44,7 @@ public class FoodItem {
         return amount;
     }
 
-    public LocalDateTime getExpiration() {
+    public LocalDate getExpiration() {
         return expiration;
     }
 
@@ -58,7 +64,7 @@ public class FoodItem {
         this.amount = amount;
     }
 
-    public void setExpiration(LocalDateTime expiration) {
+    public void setExpiration(LocalDate expiration) {
         this.expiration = expiration;
     }
 }
