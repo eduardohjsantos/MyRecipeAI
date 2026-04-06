@@ -1,6 +1,7 @@
 package dev.eduardohjsantos.MyRecipeAI.service;
 
 
+import dev.eduardohjsantos.MyRecipeAI.model.FoodItem;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatGptService {
@@ -20,8 +22,16 @@ public class ChatGptService {
         this.webClient = webClient;
     }
 
-    public Mono<String> generateRecipe(){
-        String prompt = "Me sugira uma receita simples e com ingredientes comuns";
+    public Mono<String> generateRecipe(List<FoodItem> foodItems){
+
+        String groceries = foodItems.stream()
+                .map(item -> String.format("%s ($s) - Amount: %d, Expiration Date: $s",
+                        item.getName(), item.getCategory(), item.getAmount(), item.getExpiration()))
+                .collect(Collectors.joining("\n"));
+
+        String prompt = "Baseando-se em meu banco de dados faça uma receita com os seguintes itens:\n " + groceries;
+
+
         Map<String, Object> requestBody = Map.of(
                 "model", "gpt-5.4-mini",
                 "reasoning", Map.of("effort", "low"),
