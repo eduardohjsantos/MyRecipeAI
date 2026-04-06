@@ -23,7 +23,7 @@ public class ChatGptService {
     public Mono<String> generateRecipe(){
         String prompt = "Me sugira uma receita simples e com ingredientes comuns";
         Map<String, Object> requestBody = Map.of(
-                "model", "gpt-5.4",
+                "model", "gpt-5.4-mini",
                 "reasoning", Map.of("effort", "low"),
                 "input", List.of(
                         Map.of("role","system","content","Você é um assitente de receitas"),
