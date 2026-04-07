@@ -25,12 +25,11 @@ public class ChatGptService {
     public Mono<String> generateRecipe(List<FoodItem> foodItems){
 
         String groceries = foodItems.stream()
-                .map(item -> String.format("%s ($s) - Amount: %d, Expiration Date: $s",
+                .map(item -> String.format("%s (%s) - Amount: %d, Expiration Date: %s",
                         item.getName(), item.getCategory(), item.getAmount(), item.getExpiration()))
                 .collect(Collectors.joining("\n"));
 
         String prompt = "Baseando-se em meu banco de dados faça uma receita com os seguintes itens:\n " + groceries;
-
 
         Map<String, Object> requestBody = Map.of(
                 "model", "gpt-5.4-mini",
@@ -50,7 +49,7 @@ public class ChatGptService {
                 .map(response -> {
                     var output = (List<Map<String, Object>>) response.get("output");
                     if(output != null && !output.isEmpty()){
-                        var message = (Map<String, Object>) output.get(0);
+                        var message = (Map<String, Object>) output.get(1);
                         var content = (List<Map<String, Object>>) message.get("content");
                         if (content != null && !content.isEmpty()){
                             return content.get(0).get("text").toString();
