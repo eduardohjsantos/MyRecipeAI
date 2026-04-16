@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Items Table</title>
+</head>
+<body>
+    <h1>Item List</h1>
+
+    <a th:href="@{/item/ui/add}">
+        <button> Add Item</button>
+    </a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Expiration</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each ="item: ${items}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.category}"></td>
+                <td th:text="${item.amount}"></td>
+                <td th:text="${item.expiration}"></td>
+                <td>
+                    <a th:href="@{/item/ui/delete/{id}(id=${item.id})}">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

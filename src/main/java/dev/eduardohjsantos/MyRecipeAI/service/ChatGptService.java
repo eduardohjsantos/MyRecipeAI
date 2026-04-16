@@ -25,7 +25,7 @@ public class ChatGptService {
     public Mono<String> generateRecipe(List<FoodItem> foodItems){
 
         String groceries = foodItems.stream()
-                .map(item -> String.format("%s ($s) - Amount: %d, Expiration Date: $s",
+                .map(item -> String.format("%s (%s) - Amount: %d, Expiration Date: %s",
                         item.getName(), item.getCategory(), item.getAmount(), item.getExpiration()))
                 .collect(Collectors.joining("\n"));
 
@@ -50,10 +50,22 @@ public class ChatGptService {
                 .map(response -> {
                     var output = (List<Map<String, Object>>) response.get("output");
                     if(output != null && !output.isEmpty()){
-                        var message = (Map<String, Object>) output.get(0);
+                        var message = output.stream()
+                                .map(item -> (Map<String, Object>) item)
+                                .filter(item -> "message".equals(item.get("type")))
+                                .findFirst()
+                                .orElse(null);
                         var content = (List<Map<String, Object>>) message.get("content");
-                        if (content != null && !content.isEmpty()){
-                            return content.get(0).get("text").toString();
+                        if (content != null && !content.isEmpty()) {
+                            var textItem = content.stream()
+                                    .map(c -> (Map<String, Object>) c)
+                                    .filter(c -> "output_text".equals(c.get("type")))
+                                    .findFirst()
+                                    .orElse(null);
+
+                            if (textItem != null) {
+                                return textItem.get("text").toString();
+                            }
                         }
                     }
                     return "Nenhuma receita foi gerada";
